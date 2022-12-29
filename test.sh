@@ -1,14 +1,8 @@
 #!/bin/bash
 
-#Check Sam's PID's
-#ps |grep sam | grep -v 'grep' |awk '{print $1}'
-
 #Hash the PID's
 previousHash=""
 target=30
-
-#Shows anything besides S status
-agentExists=$(ps |grep sam | grep -v 'grep' |grep -v ' S '| wc -l)
 
 while true; do
 	currentHash=$(ps |grep sam | grep -v 'grep' |awk '{print $1}' | md5sum | awk '{print $1}' )
