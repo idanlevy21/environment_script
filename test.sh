@@ -4,28 +4,37 @@
 #ps |grep sam | grep -v 'grep' |awk '{print $1}'
 
 #Hash the PID's
-hash=$(ps |grep sam | grep -v 'grep' |awk '{print $1}' | md5sum | cut -d "-" -f1)
+previousHash=""
+target=30
 
 #Shows anything besides S status
-anomaly=$(ps |grep sam | grep -v 'grep' |grep -v ' S '|awk '{print $1}' | wc -l)
+agentExists=$(ps |grep sam | grep -v 'grep' |grep -v ' S '| wc -l)
 
-while [ "$hash" == "$hash" ]
-do
-        if [ "$anomaly" -ge "1" ]; then
-                echo "$anomaly"
-        else
-                SAM="SAM is up"
-        fi
-
+while true; do
+	currentHash=$(ps |grep sam | grep -v 'grep' |awk '{print $1}' | md5sum | awk '{print $1}' )
+	if [ "$previousHash" == "$currentHash" ]; then
+		echo "Found same processes, making sure they are stable..."
                 i=1
-                while [ "$i" -lt 30 ]
-                do
-                        if [ "$SAM" == "$SAM" ]; then
+                while [ "$i" -lt $target ]; do
+			previousHash="$currentHash"
+			currentHash=$(ps |grep sam | grep -v 'grep' |awk '{print $1}' | md5sum | awk '{print $1}' )
+			if [ "$previousHash" == "$currentHash" ]; then
+				((i++))
+				echo "stable ($i/$target).."
                                 sleep 6
+			else
+				echo "Not stable! retrying..."
+				break
                         fi
-                ((i++))
-                echo "The agent is being loaded"
                 done
-break
+		
+		if [ "$i" -eq $target ]; then
+			echo "The Agent is up and running"
+			break
+		fi
+	else
+		echo "Not stable! retrying..."
+	fi
+
+	previousHash="$currentHash"
 done
-echo "SAM is up and running"
