@@ -2,7 +2,8 @@
 
 #Hash the PID's
 previousHash=""
-target=30
+target=18
+/var/sam/sam&
 
 while true; do
 	currentHash=$(ps |grep sam | grep -v 'grep' |awk '{print $1}' | md5sum | awk '{print $1}' )
@@ -15,7 +16,7 @@ while true; do
 			if [ "$previousHash" == "$currentHash" ]; then
 				((i++))
 				echo "stable ($i/$target).."
-                                sleep 6
+                                sleep 1
 			else
 				echo "Not stable! retrying..."
 				break
