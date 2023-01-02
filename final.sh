@@ -1,11 +1,13 @@
 #!/bin/bash
 
+filesDir="/var/sam/"
 pathEnv=$(cat /var/tmp/environment)
 pathEnvPure="/var/tmp/environment"
+log=/var/tmp/change_env.log
 echo "Current running environment: $pathEnv"
 
 PS3="Select the desired router's enviornment please: "
-select env in "registration.staging.sam.securingsam.io" "registration.prod.bzq.securingsam.com" "agent-gateway.lab.lg.securingsam.com" "crm.digitalsecurity-uat.appdev.io" "crm.prod.lg.securingsam.com" "registration.int.digitalsecurity.telenet.be" "registration.prd.digitalsecurity.telenet.be" "https://agent-gateway.demo.sam.securingsam.io/v3" "agent-gateway.lab.digitalsecurity.telenet.be"
+select env in select env in "registration.staging.sam.securingsam.io" "registration.prod.bzq.securingsam.com" "agent-gateway.lab.lg.securingsam.com" "agent-gateway.uat.lg.securingsam.com" "agent-gateway.prod.lg.securingsam.com" "registration.lab.digitalsecurity.telenet.be" "registration.int.digitalsecurity.telenet.be" "registration.prd.digitalsecurity.telenet.be" "agent-gateway.demo.sam.securingsam.io" "agent-gateway.poc.sam.securitysvcs.verizon.com" 
 do
         echo "You have chosen $env"
         echo "$env" > "$pathEnvPure"
@@ -16,12 +18,13 @@ done
 
 #Validate we are inside /var/sam before deleting files
 workingDir=$(pwd)
-filesDir="/var/sam/"
 if [ "$workingDir" != "$filesDir" ]; then
         cd "$filesDir"
         echo "You aren't inside the correct directory, changing to /var/sam"
+        echo $(`date +%d/%m/%Y' '%H:%M:%S`) - "Changing folder to /var/sam" > $log
 else
         echo "You are inside the correct directory: $workingDir"
+        echo $(`date +%d/%m/%Y' '%H:%M:%S`) - "Folder is /var/sam" > $log
 fi
 
 #Files to delete
