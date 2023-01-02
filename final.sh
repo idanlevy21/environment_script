@@ -29,42 +29,42 @@ fi
 
 if [ -f .jwt_token ]; then
         echo ".jwt_token exist, deleting"
-        #rm .jwt_token
+        rm .jwt_token
 else
         echo ".jwt_token doesn't exist, ignoring"
 fi
 
 if [ -f .sam_auth ]; then
         echo ".sam_auth exist, deleting"
-        #rm .sam_auth
+        rm .sam_auth
 else
         echo ".sam_auth doesn't exist, ignoring"
 fi
 
 if [ -f mode ]; then
         echo "mode exist, deleting"
-        #rm mode
+        rm mode
 else
         echo "mode doesn't exist, ignoring"
 fi
 
 if [ -f flag ]; then
         echo "flag exist, deleting"
-        #rm flag
+        rm flag
 else
         echo "flag doesn't exist, ignoring"
 fi
 
 if [ -f samdb ]; then
         echo "samdb exist, deleting"
-        #rm samdb
+        rm samdb
 else
         echo "samdb doesn't exist, ignoring"
 fi
 
 if [ "ls *.log | wc -l" != "0" ]; then
         echo "*.log exist, deleting"
-        #rm *.log
+        rm *.log
 else
         echo "*.log don't exist, ignoring"
 fi
